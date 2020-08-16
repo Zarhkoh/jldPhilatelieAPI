@@ -1,5 +1,5 @@
 {
-  "name": "jldPhilatelie",
+  "name": "jld-philatelie",
   "version": "1.0.0",
   "description": "Site dédié à l'exposition des timbres possédés par Jean-Louis Delaby",
   "main": "index.js",
@@ -17,6 +17,8 @@
     "nodemon": "^2.0.4"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^8.5.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

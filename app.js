@@ -31,8 +31,10 @@ if (CONFIG.app === 'local') {
   db_init.createDbIfNotExists();
   // Sync Database
   db.sequelize.sync({
-    force: true
+    // force: true pour forcer les changements sur la bdd
+    force: false
   }).then(function () {
+    //Décommenter pour avoir un mock data
     require('./init_db/init_db_data')(db);
     console.log('La synchronisation avec la base de données a été effectuée avec succès');
   }).catch(function (err) {
