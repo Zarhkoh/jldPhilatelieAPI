@@ -35,7 +35,7 @@ if (CONFIG.app === 'local') {
     force: false
   }).then(function () {
     //Décommenter pour avoir un mock data
-    require('./init_db/init_db_data')(db);
+    // require('./init_db/init_db_data')(db);
     console.log('La synchronisation avec la base de données a été effectuée avec succès');
   }).catch(function (err) {
     console.log(err.message);
