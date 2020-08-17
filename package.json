@@ -4,7 +4,8 @@
   "description": "Site dédié à l'exposition des timbres possédés par Jean-Louis Delaby",
   "main": "index.js",
   "scripts": {
-    "local": "nodemon -r dotenv/config app.js dotenv_config_path=./.env.local"
+    "local": "nodemon -r dotenv/config app.js dotenv_config_path=./.env.local",
+    "prod": "node -r dotenv/config app.js dotenv_config_path=./.env.prod"
   },
   "repository": {
     "type": "git",
