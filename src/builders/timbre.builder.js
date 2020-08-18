@@ -22,7 +22,6 @@ module.exports.addTimbre = (data) => {
         "anneeCoinDate": data.anneeCoinDate,
         "optionalInfos": data.optionalInfos
     }
-    console.log("TIMBRE AVANT AJOUT:", timbre);
     return new Promise(async (resolve, reject) => {
         try {
             const result = await db.models.Timbre.create(timbre);
@@ -35,7 +34,6 @@ module.exports.addTimbre = (data) => {
 }
 
 module.exports.updateTimbre = (data) => {
-    console.log("TIMBRE AVANT AJOUT:", data);
     return new Promise(async (resolve, reject) => {
         try {
             const result = await db.models.Timbre.update(data,
@@ -88,7 +86,7 @@ module.exports.getTimbresListByNumberRange = (start, end) => {
             const result = await db.models.Timbre.findAll({
                 where: {
                     numeroTimbre: { [Op.between]: [start, end] },
-                    typeTimbre: 'neuf'
+                    typeTimbre: ['neuf', 'occas']
                 }
             });
             resolve(result);
