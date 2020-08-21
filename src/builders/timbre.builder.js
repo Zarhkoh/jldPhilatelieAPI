@@ -20,7 +20,8 @@ module.exports.addTimbre = (data) => {
         "quantiteTimbre": data.quantite,
         "typeTimbre": data.type,
         "anneeCoinDate": data.anneeCoinDate,
-        "optionalInfos": data.optionalInfos
+        "optionalInfos": data.optionalInfos,
+        "tasType": data.tasType
     }
     return new Promise(async (resolve, reject) => {
         try {

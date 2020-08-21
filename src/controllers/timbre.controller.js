@@ -41,7 +41,6 @@ exports.addTimbre = async (req, res) => {
 
 exports.updateTimbre = async (req, res) => {
     try {
-        console.log("TIMBRE A ADD:", req.body.params.newTimbre);
         let data = await timbreService.updateTimbre(req.body.params.newTimbre);
         return res.status(200).json(data);
     } catch (err) {

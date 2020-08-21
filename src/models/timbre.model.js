@@ -34,6 +34,11 @@ module.exports = (sequelizeModels, Sequelize) => {
         optionalInfos: {
             type: Sequelize.STRING(50),
             allowNull: true
+        },
+        tasType:
+        {
+            type: Sequelize.STRING(50),
+            allowNull: true
         }
     }, {
         tableName: 'timbre',
