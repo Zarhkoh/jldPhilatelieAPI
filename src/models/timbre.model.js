@@ -23,7 +23,11 @@ module.exports = (sequelizeModels, Sequelize) => {
             type: Sequelize.INTEGER(2),
             allowNull: false
         },
-        typeTimbre: {
+        catTimbre: {
+            type: Sequelize.STRING(10),
+            allowNull: false
+        },
+        etatTimbre: {
             type: Sequelize.STRING(10),
             allowNull: false
         },

@@ -37,7 +37,7 @@ router.get('/timbres', TimbreController.getTimbres);
  *       200:
  *         description: timbre
  */
-router.get('/timbresByType', TimbreController.getTimbresListByType);
+router.get('/timbresByCat', TimbreController.getTimbresListByCat);
 
 /**
  * @swagger

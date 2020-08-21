@@ -84,10 +84,10 @@ module.exports.getTimbresListByNumberRange = (start, end) => {
     });
 };
 
-module.exports.getTimbresListByType = (type) => {
+module.exports.getTimbresListByCat = (categorie) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const timbreList = await timbreBuilder.getTimbresListByType(type);
+            const timbreList = await timbreBuilder.getTimbresListByCat(categorie);
             resolve(timbreList);
         } catch (err) {
             reject({

@@ -10,7 +10,6 @@ exports.getTimbres = async (req, res) => {
     }
 };
 exports.deleteTimbreByNumeroTimbre = async (req, res) => {
-    console.log("on va delete le timbre N°" + req.query.numero_timbre);
     try {
         let data = await timbreService.deleteTimbreByNumeroTimbre(req.query.numero_timbre);
         return res.status(200).json(data);
@@ -30,7 +29,6 @@ exports.getTimbreByNumeroTimbre = async (req, res) => {
 
 exports.addTimbre = async (req, res) => {
     try {
-        console.log("TIMBRE A ADD:", req.body.params.newTimbre);
         let data = await timbreService.addTimbre(req.body.params.newTimbre);
         return res.status(200).json(data);
     } catch (err) {
@@ -59,9 +57,9 @@ exports.getTimbresListByNumberRange = async (req, res) => {
     }
 };
 
-exports.getTimbresListByType = async (req, res) => {
+exports.getTimbresListByCat = async (req, res) => {
     try {
-        let data = await timbreService.getTimbresListByType(req.query.type);
+        let data = await timbreService.getTimbresListByCat(req.query.categorie);
         return res.status(200).json(data);
     } catch (err) {
         return res.status(err.status).send(err);

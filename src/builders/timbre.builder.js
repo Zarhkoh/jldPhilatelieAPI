@@ -18,7 +18,8 @@ module.exports.addTimbre = (data) => {
         "imageTimbreUrl": data.image,
         "prixTimbre": data.prix,
         "quantiteTimbre": data.quantite,
-        "typeTimbre": data.type,
+        "catTimbre": data.categorie,
+        "etatTimbre": data.etat,
         "anneeCoinDate": data.anneeCoinDate,
         "optionalInfos": data.optionalInfos,
         "tasType": data.tasType
@@ -65,29 +66,13 @@ module.exports.deleteTimbreByNumeroTimbre = (numero_timbre) => {
     });
 };
 
-
-module.exports.findTimbreByNumeroTimbre = (numero_timbre) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const result = await db.models.Timbre.findOne({
-                where: {
-                    numeroTimbre: numero_timbre
-                }
-            });
-            resolve(result);
-        } catch (err) {
-            reject(err);
-        }
-    });
-};
-
 module.exports.getTimbresListByNumberRange = (start, end) => {
     return new Promise(async (resolve, reject) => {
         try {
             const result = await db.models.Timbre.findAll({
                 where: {
                     numeroTimbre: { [Op.between]: [start, end] },
-                    typeTimbre: ['neuf', 'occas']
+                    catTimbre: ['classic']
                 }
             });
             resolve(result);
@@ -97,12 +82,12 @@ module.exports.getTimbresListByNumberRange = (start, end) => {
     });
 };
 
-module.exports.getTimbresListByType = (type) => {
+module.exports.getTimbresListByCat = (categorie) => {
     return new Promise(async (resolve, reject) => {
         try {
             const result = await db.models.Timbre.findAll({
                 where: {
-                    typeTimbre: type
+                    catTimbre: categorie
                 }
             });
             resolve(result);
