@@ -84,7 +84,7 @@ router.get('/timbreByNumeroTimbre', TimbreController.getTimbreByNumeroTimbre);
 
 /**
  * @swagger
- * /deleteTimbreByNumeroTimbre:
+ * /deleteTimbreById:
  *   get:
  *     description: Supprime un timbre par son numéro
  *     produces:
@@ -99,7 +99,7 @@ router.get('/timbreByNumeroTimbre', TimbreController.getTimbreByNumeroTimbre);
  *       200:
  *         description: timbre
  */
-router.get('/deleteTimbreByNumeroTimbre', TimbreController.deleteTimbreByNumeroTimbre);
+router.get('/deleteTimbreById', TimbreController.deleteTimbreById);
 
 
 /**

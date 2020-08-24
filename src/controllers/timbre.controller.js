@@ -9,9 +9,9 @@ exports.getTimbres = async (req, res) => {
         return res.status(err.status).send(err);
     }
 };
-exports.deleteTimbreByNumeroTimbre = async (req, res) => {
+exports.deleteTimbreById = async (req, res) => {
     try {
-        let data = await timbreService.deleteTimbreByNumeroTimbre(req.query.numero_timbre);
+        let data = await timbreService.deleteTimbreById(req.query.timbreId);
         return res.status(200).json(data);
     } catch (err) {
         return res.status(err.status).send(err);

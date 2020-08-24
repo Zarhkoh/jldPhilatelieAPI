@@ -51,12 +51,12 @@ module.exports.updateTimbre = (data) => {
     });
 }
 
-module.exports.deleteTimbreByNumeroTimbre = (numero_timbre) => {
+module.exports.deleteTimbreById = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
             const result = await db.models.Timbre.destroy({
                 where: {
-                    numeroTimbre: numero_timbre
+                    timbreId: id
                 }
             });
             resolve(result);

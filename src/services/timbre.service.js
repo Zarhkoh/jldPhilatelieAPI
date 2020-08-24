@@ -42,10 +42,10 @@ module.exports.updateTimbre = (timbre) => {
     });
 };
 
-module.exports.deleteTimbreByNumeroTimbre = (numero_timbre) => {
+module.exports.deleteTimbreById = (timbreId) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const timbre = await timbreBuilder.deleteTimbreByNumeroTimbre(numero_timbre);
+            const timbre = await timbreBuilder.deleteTimbreById(timbreId);
             resolve(timbre);
         } catch (err) {
             reject({
