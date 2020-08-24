@@ -81,6 +81,20 @@ module.exports.getTimbresListByNumberRange = (start, end) => {
         }
     });
 };
+module.exports.findTimbreByNumeroTimbre = (numero) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await db.models.Timbre.findAll({
+                where: {
+                    numeroTimbre: numero
+                }
+            });
+            resolve(result);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
 
 module.exports.getTimbresListByCat = (categorie) => {
     return new Promise(async (resolve, reject) => {
