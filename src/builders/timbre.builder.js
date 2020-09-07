@@ -96,6 +96,44 @@ module.exports.findTimbreByNumeroTimbre = (numero) => {
     });
 };
 
+module.exports.findTimbreByIdTimbre = (id) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await db.models.Timbre.findOne({
+                where: {
+                    timbreId: id
+                }
+            });
+            resolve(result);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
+module.exports.updateTimbreQuantity = (id, operator) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await db.models.Timbre.findOne({
+                where: {
+                    timbreId: id
+                }
+            }).then(option => {
+                if (operator === 'plus') {
+                    return option.increment('quantiteTimbre');
+                }
+                else if (operator === 'minus') {
+                    return option.decrement('quantiteTimbre');
+
+                }
+            });
+            resolve(result);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
 module.exports.getTimbresListByCat = (categorie) => {
     return new Promise(async (resolve, reject) => {
         try {

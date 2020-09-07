@@ -84,6 +84,49 @@ router.get('/timbreByNumeroTimbre', TimbreController.getTimbreByNumeroTimbre);
 
 /**
  * @swagger
+ * /timbreByIdTimbre:
+ *   get:
+ *     description: Récupère un timbre par son ID
+ *     produces:
+ *      - application/json
+ *     parameters:
+ *       - in: query
+ *         name : id_timbre
+ *         description: Récupère un timbre par son ID.
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: timbre
+ */
+router.get('/timbreByIdTimbre', TimbreController.getTimbreByIdTimbre);
+
+/**
+ * @swagger
+ * /updateTimbreQuantity:
+ *   get:
+ *     description: Update la quantité disponible pour le timbre
+ *     produces:
+ *      - application/json
+ *     parameters:
+ *       - in: query
+ *         name : id_timbre
+ *         description: Id du timbre.
+ *         required: true
+ *         type: string
+ *       - in: query
+ *         name : operator
+ *         description: Opérator (plus/minus)
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: timbre
+ */
+router.get('/updateTimbreQuantity', TimbreController.updateTimbreQuantity);
+
+/**
+ * @swagger
  * /deleteTimbreById:
  *   get:
  *     description: Supprime un timbre par son numéro

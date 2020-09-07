@@ -70,6 +70,34 @@ module.exports.getTimbreByNumeroTimbre = (numero_timbre) => {
     });
 };
 
+module.exports.getTimbreByIdTimbre = (id_timbre) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const timbre = await timbreBuilder.findTimbreByIdTimbre(id_timbre);
+            resolve(timbre);
+        } catch (err) {
+            reject({
+                status: 500,
+                message: err
+            });
+        }
+    });
+};
+
+module.exports.updateTimbreQuantity = (id_timbre, operator) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const timbre = await timbreBuilder.updateTimbreQuantity(id_timbre, operator);
+            resolve(timbre);
+        } catch (err) {
+            reject({
+                status: 500,
+                message: err
+            });
+        }
+    });
+};
+
 module.exports.getTimbresListByNumberRange = (start, end) => {
     return new Promise(async (resolve, reject) => {
         try {

@@ -27,6 +27,24 @@ exports.getTimbreByNumeroTimbre = async (req, res) => {
     }
 };
 
+exports.getTimbreByIdTimbre = async (req, res) => {
+    try {
+        let data = await timbreService.getTimbreByIdTimbre(req.query.id_timbre);
+        return res.status(200).json(data);
+    } catch (err) {
+        return res.status(err.status).send(err);
+    }
+};
+
+exports.updateTimbreQuantity = async (req, res) => {
+    try {
+        let data = await timbreService.updateTimbreQuantity(req.query.id_timbre, req.query.operator);
+        return res.status(200).json(data);
+    } catch (err) {
+        return res.status(err.status).send(err);
+    }
+};
+
 exports.addTimbre = async (req, res) => {
     try {
         let data = await timbreService.addTimbre(req.body.params.newTimbre);
