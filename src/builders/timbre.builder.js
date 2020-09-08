@@ -51,6 +51,7 @@ module.exports.updateTimbre = (data) => {
     });
 }
 
+
 module.exports.deleteTimbreById = (id) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -111,7 +112,7 @@ module.exports.findTimbreByIdTimbre = (id) => {
     });
 };
 
-module.exports.updateTimbreQuantity = (id, operator) => {
+module.exports.incrementTimbreQuantity = (id, qte) => {
     return new Promise(async (resolve, reject) => {
         try {
             const result = await db.models.Timbre.findOne({
@@ -119,13 +120,23 @@ module.exports.updateTimbreQuantity = (id, operator) => {
                     timbreId: id
                 }
             }).then(option => {
-                if (operator === 'plus') {
-                    return option.increment('quantiteTimbre');
+                return option.increment('quantiteTimbre', { by: qte });
+            });
+            resolve(result);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+module.exports.decrementTimbreQuantity = (id, qte) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await db.models.Timbre.findOne({
+                where: {
+                    timbreId: id
                 }
-                else if (operator === 'minus') {
-                    return option.decrement('quantiteTimbre');
-
-                }
+            }).then(option => {
+                return option.decrement('quantiteTimbre', { by: qte });
             });
             resolve(result);
         } catch (err) {

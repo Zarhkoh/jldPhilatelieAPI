@@ -36,14 +36,25 @@ exports.getTimbreByIdTimbre = async (req, res) => {
     }
 };
 
-exports.updateTimbreQuantity = async (req, res) => {
+exports.incrementTimbreQuantity = async (req, res) => {
     try {
-        let data = await timbreService.updateTimbreQuantity(req.query.id_timbre, req.query.operator);
+        console.log('ctrlincrementdecrement ', req.query.id_timbre, req.query.quantity);
+        let data = await timbreService.incrementTimbreQuantity(req.query.id_timbre, req.query.quantity);
         return res.status(200).json(data);
     } catch (err) {
         return res.status(err.status).send(err);
     }
 };
+exports.decrementTimbreQuantity = async (req, res) => {
+    try {
+        console.log('ctrlincrementdecrement ', req.query.id_timbre, req.query.quantity);
+        let data = await timbreService.decrementTimbreQuantity(req.query.id_timbre, req.query.quantity);
+        return res.status(200).json(data);
+    } catch (err) {
+        return res.status(err.status).send(err);
+    }
+};
+
 
 exports.addTimbre = async (req, res) => {
     try {
