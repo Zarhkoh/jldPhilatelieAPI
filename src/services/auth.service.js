@@ -83,7 +83,6 @@ module.exports.register = (body) => {
             }
 
             // On s'assure qu'aucune entrée ne soit vide
-            console.log("BODY ", body, "PRENOM: ", prenom);
             if (pwd.length === 0 || email.length === 0 || prenom.length == 0) {
                 return resolve({
                     status: 400
