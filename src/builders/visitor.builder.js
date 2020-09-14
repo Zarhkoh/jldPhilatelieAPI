@@ -29,17 +29,14 @@ module.exports.addVisit = (data) => {
                 }
             }).then(visitor => {
                 if (visitor == null) {
-                    console.log('pas trouvé, on crée');
                     this.createNewVisitor(data);
                     this.updateTotalVisits();
                 }
                 else {
-                    console.log('USER TROUVÉ');
                     try {
                         const actualDate = moment().format('yyyy-MM-DD');
                         const lastVisiteDate = moment(visitor.visitorLastVisit).format('yyyy-MM-DD');
                         if (lastVisiteDate !== actualDate) {
-                            console.log('updateTotalVisits');
                             this.updateTotalVisits();
                             visitor.update({ visitorLastVisit: new Date() });
                             return visitor.increment('visitCount', { by: 1 });
