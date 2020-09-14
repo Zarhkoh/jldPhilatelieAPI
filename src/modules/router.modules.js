@@ -1,3 +1,4 @@
+const visitor = require('../routes/visitor.route');
 const timbre = require('../routes/timbre.route');
 const auth = require('../routes/auth.route')
 const CONFIG = require('../config/config');
@@ -10,5 +11,8 @@ module.exports = app => {
 
     // TIMBRE
     app.use(CONFIG.uri_prefix_main, timbre);
+
+    // VISITOR
+    app.use(CONFIG.uri_prefix_main, visitor);
 
 };
