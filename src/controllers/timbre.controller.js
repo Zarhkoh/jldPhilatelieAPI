@@ -38,7 +38,6 @@ exports.getTimbreByIdTimbre = async (req, res) => {
 
 exports.incrementTimbreQuantity = async (req, res) => {
     try {
-        console.log('ctrlincrementdecrement ', req.query.id_timbre, req.query.quantity);
         let data = await timbreService.incrementTimbreQuantity(req.query.id_timbre, req.query.quantity);
         return res.status(200).json(data);
     } catch (err) {
@@ -47,7 +46,6 @@ exports.incrementTimbreQuantity = async (req, res) => {
 };
 exports.decrementTimbreQuantity = async (req, res) => {
     try {
-        console.log('ctrlincrementdecrement ', req.query.id_timbre, req.query.quantity);
         let data = await timbreService.decrementTimbreQuantity(req.query.id_timbre, req.query.quantity);
         return res.status(200).json(data);
     } catch (err) {
