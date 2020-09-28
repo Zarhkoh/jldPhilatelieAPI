@@ -110,4 +110,3 @@ dist
 # custom files
 .env.prod
 jldPhilatelieApi.json
-config.js

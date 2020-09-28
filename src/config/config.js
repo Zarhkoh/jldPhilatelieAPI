@@ -27,4 +27,12 @@ CONFIG.db_password = process.env.DB_PASSWORD;
 
 CONFIG.token_expire = 60 * 60;
 CONFIG.token_status = 'jldphilatelie';
+
+
+CONFIG.mail_transport_smtp_domain = process.env.MAIL_TRANSPORT_SMTP_DOMAIN
+CONFIG.mail_transport_smtp_port = process.env.MAIL_TRANSPORT_SMTP_PORT
+CONFIG.mail_sender_address = process.env.MAIL_SENDER_ADDRESS
+CONFIG.mail_sender_destination = process.env.MAIL_SENDER_DESTINATION
+CONFIG.mail_sender_pwd = process.env.MAIL_SENDER_PWD
+
 module.exports = CONFIG;

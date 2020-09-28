@@ -74,7 +74,7 @@ module.exports.sendMailToSeller = async (data, timbreTable, timbreQuantity, sous
     try {
         mailContent = '<html><head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <style>table{border-collapse: collapse;}table, th, td{border: 1px solid black; text-align: center;}</style></head><body> <div> <div style="display: flex"> <img width="80px" height="80px" src="https://jld-philatelie.fr/assets/img/logo.png"/> <h3 style="margin:1em 0 0 0;color:transparent;">Un nouveau devis est arrivé !</h3> </div><div style="border-top: 5px solid #236088;"> <div> <h5><strong>D&#233;tail du devis</strong></h5> <p>Mail de contact: ' + data.email + '</p><table> <thead class="thead-light"> <tr> <th>N&#176;</th> <th>Prix</th> <th>Qt&#233;</th> <th>Prix total</th> </tr></thead> <tbody>' + timbreTable + ' <tr> <td><strong>SS TOTAL</strong></td><td></td><td>' + timbreQuantity + '</td><td>' + sousTotal.toFixed(2) + '€</td></tr><tr> <td><strong>ENVOI ' + data.envoi.type + '</strong></td><td>' + Number(data.envoi.prix).toFixed(2) + '€</td><td>1</td><td>' + Number(data.envoi.prix).toFixed(2) + '€</td></tr><tr> <td><strong>TOTAL</strong></td><td></td><td></td><td>' + totalPrice.toFixed(2) + '€</td></tr></tbody> </table> </div></div></div>' + message + '</body></html>';
         var mailOptions = {
-            from: CONFIG.mail_sender_adress,
+            from: CONFIG.mail_sender_address,
             to: CONFIG.mail_sender_destination,
             subject: 'DEVIS #' + response.devisId + ': ' + data.email,
             html: mailContent
@@ -84,7 +84,7 @@ module.exports.sendMailToSeller = async (data, timbreTable, timbreQuantity, sous
             port: CONFIG.mail_transport_smtp_port,
             secure: true,
             auth: {
-                user: CONFIG.mail_sender_adress,
+                user: CONFIG.mail_sender_address,
                 pass: CONFIG.mail_sender_pwd
             }
         });
@@ -109,7 +109,7 @@ module.exports.sendMailToCustomer = async (data, timbreTable, timbreQuantity, so
         console.log("MAILTOCUSTOMER CONSTRUCT");
         mailContent = '<html><head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <style>table{border-collapse: collapse;}table, th, td{border: 1px solid black; text-align: center;}</style></head><body> <div> <div style="display: flex"> <img width="80px" height="80px" src="https://jld-philatelie.fr/assets/img/logo.png"/> <h3 style="margin:1em 0 0 0;color:transparent;">Votre devis a été envoyé</h3> </div><div style="border-top: 5px solid #236088;"> <div> <h5><strong>D&#233;tail du devis</strong></h5> <table> <thead class="thead-light"> <tr> <th>N&#176;</th> <th>Prix</th> <th>Qt&#233;</th> <th>Prix total</th> </tr></thead> <tbody>' + timbreTable + ' <tr> <td><strong>SS TOTAL</strong></td><td></td><td>' + timbreQuantity + '</td><td>' + sousTotal.toFixed(2) + '€</td></tr></tbody> </table> </div><div id="livraison">Livraison choisie: ' + data.envoi.denomination + '</div><div class="total"> <p>Total: ' + totalPrice + '</p></div></div></div>' + message + '</body></html>';
         var mailOptions = {
-            from: CONFIG.mail_sender_adress,
+            from: CONFIG.mail_sender_address,
             to: data.email,
             subject: 'JLD-Philatelie - Devis #' + response.devisId,
             html: mailContent
@@ -120,7 +120,7 @@ module.exports.sendMailToCustomer = async (data, timbreTable, timbreQuantity, so
             port: CONFIG.mail_transport_smtp_port,
             secure: true,
             auth: {
-                user: CONFIG.mail_sender_adress,
+                user: CONFIG.mail_sender_address,
                 pass: CONFIG.mail_sender_pwd
             }
         });
