@@ -28,4 +28,10 @@ CONFIG.db_password = process.env.DB_PASSWORD;
 CONFIG.token_expire = 60 * 60;
 CONFIG.token_status = 'jldphilatelie';
 
+CONFIG.mail_transport_smtp_domain = 'mail.navillus.kim'
+CONFIG.mail_transport_smtp_port = '465'
+CONFIG.mail_sender_adress = 'devis@jld-philatelie.fr'
+CONFIG.mail_sender_destination = 'zarhkoh@hotmail.fr'
+CONFIG.mail_sender_pwd = '5507615Nn'
+
 module.exports = CONFIG;

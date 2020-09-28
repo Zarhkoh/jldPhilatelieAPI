@@ -128,6 +128,7 @@ module.exports.incrementTimbreQuantity = (id, qte) => {
         }
     });
 };
+
 module.exports.decrementTimbreQuantity = (id, qte) => {
     return new Promise(async (resolve, reject) => {
         try {
