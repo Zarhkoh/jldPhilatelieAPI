@@ -65,7 +65,6 @@ module.exports.sendDevis = (data) => {
             status: 200,
             message: 'Mail sent'
         })
-        console.log('FINI,RESPONSE: ');
     });
 
 }
