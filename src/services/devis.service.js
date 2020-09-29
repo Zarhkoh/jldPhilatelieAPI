@@ -45,7 +45,7 @@ module.exports.sendDevis = (data) => {
             await this.sendMailToSeller(data, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response);
             await this.sendMailToCustomer(data, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response);
         } catch (err) {
-            console.log(err);
+            console.log('ON REJETE', err);
             reject({
                 status: 500,
                 message: err
@@ -83,14 +83,14 @@ module.exports.sendMailToSeller = async (data, timbreTable, timbreQuantity, sous
             port: CONFIG.mail_transport_smtp_port,
             secure: true,
             auth: {
-                user: CONFIG.mail_sender_address,
-                pass: CONFIG.mail_sender_pwd
-            }
+                user: CONFIG.mail_transport_smtp_login,
+                pass: CONFIG.mail_transport_smtp_pwd
+            },
+            debug: true
         });
         await transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-                console.log(error);
-                throw new Error(error);
+                console.log("l'erreur", error);
             } else {
                 console.log('mail envoyé: ', info);
             }
@@ -98,14 +98,12 @@ module.exports.sendMailToSeller = async (data, timbreTable, timbreQuantity, sous
         return true;
     } catch (error) {
         console.log(error);
-        throw new Error(error);
+        return error
     }
 }
 
 module.exports.sendMailToCustomer = async (data, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response) => {
     try {
-        console.log("MAILTOCUSTOMER");
-        console.log("MAILTOCUSTOMER CONSTRUCT");
         mailContent = '<html><head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <style>table{border-collapse: collapse;}table, th, td{border: 1px solid black; text-align: center;}</style></head><body> <div> <div style="display: flex"> <img width="80px" height="80px" src="https://jld-philatelie.fr/assets/img/logo.png"/> <h3 style="margin:1em 0 0 0;color:transparent;">Votre devis a été envoyé</h3> </div><div style="border-top: 5px solid #236088;"> <div> <h5><strong>D&#233;tail du devis</strong></h5> <table> <thead class="thead-light"> <tr> <th>N&#176;</th> <th>Prix</th> <th>Qt&#233;</th> <th>Prix total</th> </tr></thead> <tbody>' + timbreTable + ' <tr> <td><strong>SS TOTAL</strong></td><td></td><td>' + timbreQuantity + '</td><td>' + sousTotal.toFixed(2) + '€</td></tr></tbody> </table> </div><div id="livraison">Livraison choisie: ' + data.envoi.denomination + '</div><div class="total"> <p>Total: ' + totalPrice + '</p></div></div></div>' + message + '</body></html>';
         var mailOptions = {
             from: CONFIG.mail_sender_address,
@@ -113,27 +111,26 @@ module.exports.sendMailToCustomer = async (data, timbreTable, timbreQuantity, so
             subject: 'JLD-Philatelie - Devis #' + response.devisId,
             html: mailContent
         };
-        console.log("MAILTOCUSTOMER CREATETRANSPORT");
         var transporter = nodemailer.createTransport({
             host: CONFIG.mail_transport_smtp_domain,
             port: CONFIG.mail_transport_smtp_port,
             secure: true,
             auth: {
-                user: CONFIG.mail_sender_address,
-                pass: CONFIG.mail_sender_pwd
-            }
+                user: CONFIG.mail_transport_smtp_login,
+                pass: CONFIG.mail_transport_smtp_pwd
+            },
+            logger: true
+
         });
         await transporter.sendMail(mailOptions, function (error, info) {
             console.log('sending mail');
             if (error) {
-                console.log(error);
-                throw new Error(error);
+                console.log('envoie erreur: ', error);
             } else {
                 console.log('mail envoyé: ', info);
             }
         });
     } catch (error) {
         console.log(error);
-        throw new Error(error);
     }
 }
