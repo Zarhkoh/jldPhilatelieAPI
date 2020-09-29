@@ -5,7 +5,6 @@ const timbreBuilder = require('../builders/timbre.builder');
 
 module.exports.sendDevis = (data) => {
     return new Promise(async (resolve, reject) => {
-        console.log(data.envoi);
         let timbreTable = '';
         let totalPrice;
         let sousTotal = 0;
@@ -45,7 +44,6 @@ module.exports.sendDevis = (data) => {
             await this.sendMailToSeller(data, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response);
             await this.sendMailToCustomer(data, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response);
         } catch (err) {
-            console.log('ON REJETE', err);
             reject({
                 status: 500,
                 message: err
@@ -90,14 +88,11 @@ module.exports.sendMailToSeller = async (data, timbreTable, timbreQuantity, sous
         });
         await transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
-                console.log("l'erreur", error);
             } else {
-                console.log('mail envoyé: ', info);
             }
         });
         return true;
     } catch (error) {
-        console.log(error);
         return error
     }
 }
@@ -119,18 +114,12 @@ module.exports.sendMailToCustomer = async (data, timbreTable, timbreQuantity, so
                 user: CONFIG.mail_transport_smtp_login,
                 pass: CONFIG.mail_transport_smtp_pwd
             },
-            logger: true
-
         });
         await transporter.sendMail(mailOptions, function (error, info) {
-            console.log('sending mail');
             if (error) {
-                console.log('envoie erreur: ', error);
             } else {
-                console.log('mail envoyé: ', info);
             }
         });
     } catch (error) {
-        console.log(error);
     }
 }
