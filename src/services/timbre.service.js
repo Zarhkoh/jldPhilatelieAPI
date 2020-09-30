@@ -84,10 +84,24 @@ module.exports.getTimbreByIdTimbre = (id_timbre) => {
     });
 };
 
-module.exports.updateTimbreQuantity = (id_timbre, operator) => {
+module.exports.incrementTimbreQuantity = (id_timbre, qty) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const timbre = await timbreBuilder.updateTimbreQuantity(id_timbre, operator);
+            const timbre = await timbreBuilder.incrementTimbreQuantity(id_timbre, qty);
+            resolve(timbre);
+        } catch (err) {
+            reject({
+                status: 500,
+                message: err
+            });
+        }
+    });
+};
+
+module.exports.decrementTimbreQuantity = (id_timbre, qty) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const timbre = await timbreBuilder.decrementTimbreQuantity(id_timbre, qty);
             resolve(timbre);
         } catch (err) {
             reject({

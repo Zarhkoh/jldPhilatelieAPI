@@ -103,9 +103,9 @@ router.get('/timbreByIdTimbre', TimbreController.getTimbreByIdTimbre);
 
 /**
  * @swagger
- * /updateTimbreQuantity:
+ * /incrementTimbreQuantity:
  *   get:
- *     description: Update la quantité disponible pour le timbre
+ *     description: Incremente(+) la quantité disponible pour le timbre
  *     produces:
  *      - application/json
  *     parameters:
@@ -115,15 +115,40 @@ router.get('/timbreByIdTimbre', TimbreController.getTimbreByIdTimbre);
  *         required: true
  *         type: string
  *       - in: query
- *         name : operator
- *         description: Opérator (plus/minus)
+ *         name : quantity
+ *         description: Quantité
  *         required: true
  *         type: string
  *     responses:
  *       200:
  *         description: timbre
  */
-router.get('/updateTimbreQuantity', TimbreController.updateTimbreQuantity);
+router.get('/incrementTimbreQuantity', TimbreController.incrementTimbreQuantity);
+
+
+/**
+ * @swagger
+ * /decrementTimbreQuantity:
+ *   get:
+ *     description: Décrémente(-) la quantité disponible pour le timbre
+ *     produces:
+ *      - application/json
+ *     parameters:
+ *       - in: query
+ *         name : id_timbre
+ *         description: Id du timbre.
+ *         required: true
+ *         type: string
+ *       - in: query
+ *         name : quantity
+ *         description: Quantité
+ *         required: true
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: timbre
+ */
+router.get('/decrementTimbreQuantity', TimbreController.decrementTimbreQuantity);
 
 /**
  * @swagger
