@@ -43,6 +43,7 @@ module.exports.sendDevis = (data) => {
             const response = await devisBuilder.addDevis(data);
             await this.sendMailToSeller(data, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response);
             await this.sendMailToCustomer(data, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response);
+            console.log('les mails devraient être envoyés');
         } catch (err) {
             reject({
                 status: 500,
@@ -88,12 +89,16 @@ module.exports.sendMailToSeller = async (data, timbreTable, timbreQuantity, sous
         });
         await transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
+                console.log('mail error:', error);
+                return false;
             } else {
+                console.log('mail envoyé?', info);
+                return true;
             }
         });
-        return true;
     } catch (error) {
-        return error
+        console.log('mail error: ', error);
+        return false
     }
 }
 
@@ -117,9 +122,15 @@ module.exports.sendMailToCustomer = async (data, timbreTable, timbreQuantity, so
         });
         await transporter.sendMail(mailOptions, function (error, info) {
             if (error) {
+                console.log('mail error:', error);
+                return false;
             } else {
+                console.log('mail envoyé?', info);
+                return true;
             }
         });
     } catch (error) {
+        console.log('mail error: ', error);
+        return false;
     }
 }
