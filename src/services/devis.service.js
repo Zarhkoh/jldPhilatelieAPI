@@ -2,17 +2,48 @@ const nodemailer = require('nodemailer');
 const CONFIG = require('../config/config');
 const devisBuilder = require('../builders/devis.builder');
 const timbreBuilder = require('../builders/timbre.builder');
+var dayjs = require('dayjs')
+
 
 module.exports.sendDevis = (data) => {
     return new Promise(async (resolve, reject) => {
-        let timbreTable = '';
-        let totalPrice;
+        let date = dayjs().format('DD/MM/YYYY [à] HH:mm');
+        let totalPrice = 0;
         let sousTotal = 0;
         let timbreQuantity = 0;
         let message = '';
+        let timbreList = '';
+        let timbreTable = '';
+        // On setup la liste de timbres
         await data.timbres.forEach(timbre => {
             timbreQuantity += Number(timbre.quantite);
             sousTotal += Number(timbre.prixTimbre) * timbre.quantite;
+
+            // PARTIE LISTE TIMBRE POUR VENDEUR
+
+            // on démarre la DIV du timbre en y ajoutant la classe & la quantité
+            timbreList += '<div class="timbre">'.concat(timbre.quantite).concat('x ');
+            // Catégorie du timbre si != classic
+            if (timbre.catTimbre != 'classic') { timbreList += timbre.catTimbre }
+            // On ajoute le numéro du timbre
+            timbreList += timbre.numeroTimbre;
+            // Si timbre d'occas, on ajoute l'étoile
+            if (timbre.etatTimbre == 'occas') {
+                timbreList += '*';
+            }
+            // Si timbre SG on ajoute SG
+            if (timbre.etatTimbre == 'sg') {
+                timbreList += 'SG';
+            }
+            if (timbre.catTimbre == 'cd') {
+                timbreList += '(' + timbre.annéeCoinDate + ')';
+            }
+            if (timbre.catTimbre == 'obl' || timbre.catTimbre == 'spe') {
+                timbreList += timbre.optionalInfos;
+            }
+            timbreList += '</div>'
+
+            // PARTIE TIMBRE TABLE POUR L'ACHETEUR
             timbreTable += '<tr>'
             // Catégorie du timbre si != classic
             if (timbre.catTimbre != 'classic') { timbreTable += timbre.catTimbre + ' ' }
@@ -35,14 +66,16 @@ module.exports.sendDevis = (data) => {
             }
             timbreTable += '</td>' + '<td>' + timbre.prixTimbre + '€</td>' + '<td>' + timbre.quantite + '</td><td>' + Number(timbre.prixTimbre * timbre.quantite).toFixed(2) + '€</td></tr>'
         });
-        totalPrice = Number(data.envoi.prix) + sousTotal;
+        console.log('PRIX ENVOI:' + data.envoi.prix, "SOUS TOTAL:" + sousTotal, "LABEL ENVOI:", data.envoi.label);
+        totalPrice = Number(data.envoi.prix) + Number(sousTotal);
         if (data.optionalMessage != '') {
             message = '<p>Message :</p><div style="background-color:#e2e2e2;border:1px solid #bababa;padding:1em;">' + data.optionalMessage + '</div>';
         }
         try {
             const response = await devisBuilder.addDevis(data);
-            await this.sendMailToSeller(data, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response);
-            await this.sendMailToCustomer(data, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response);
+            console.log('REPONSE:-----------------', response.devisId, '-------------------FIN RESPONSE')
+            await this.sendMailToSeller(data, date, timbreList, timbreQuantity, sousTotal, totalPrice, message, response);
+            await this.sendMailToCustomer(data, date, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response.devisId);
             console.log('les mails devraient être envoyés');
         } catch (err) {
             reject({
@@ -68,13 +101,13 @@ module.exports.sendDevis = (data) => {
 
 }
 
-module.exports.sendMailToSeller = async (data, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response) => {
+module.exports.sendMailToSeller = async (data, date, timbreList, timbreQuantity, sousTotal, totalPrice, message, response) => {
     try {
-        mailContent = '<html><head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <style>table{border-collapse: collapse;}table, th, td{border: 1px solid black; text-align: center;}</style></head><body> <div> <div style="display: flex"> <img width="80px" height="80px" src="https://jld-philatelie.fr/assets/img/logo.png"/> <h3 style="margin:1em 0 0 0;color:transparent;">Un nouveau devis est arrivé !</h3> </div><div style="border-top: 5px solid #236088;"> <div> <h5><strong>D&#233;tail du devis</strong></h5> <p>Mail de contact: ' + data.email + '</p><table> <thead class="thead-light"> <tr> <th>N&#176;</th> <th>Prix</th> <th>Qt&#233;</th> <th>Prix total</th> </tr></thead> <tbody>' + timbreTable + ' <tr> <td><strong>SS TOTAL</strong></td><td></td><td>' + timbreQuantity + '</td><td>' + sousTotal.toFixed(2) + '€</td></tr><tr> <td><strong>ENVOI ' + data.envoi.type + '</strong></td><td>' + Number(data.envoi.prix).toFixed(2) + '€</td><td>1</td><td>' + Number(data.envoi.prix).toFixed(2) + '€</td></tr><tr> <td><strong>TOTAL</strong></td><td></td><td></td><td>' + totalPrice.toFixed(2) + '€</td></tr></tbody> </table> </div></div></div>' + message + '</body></html>';
+        mailContent = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style>body{font-family:Helvetica}.content{max-width:600px !important;display:flex;flex-direction:column;justify-content:center;margin:auto}#header{display:flex;padding:0.5em}.centered{display:block;margin-left:auto;margin-right:auto}.mb{margin-bottom:3em}.card{background-color:rgb(245, 245, 245);border:1px rgb(214, 214, 214) solid;padding:0.5em;border-radius:5px;margin-bottom:2em}.timbreList{display:flex;flex-wrap:wrap}.timbre{background-color:#4592af;color:white;border-radius:5px;margin:0.2em;padding:0.2em}</style></head><body><h3 style="margin:0;color:transparent;height:0;">Une nouvelle commande est arrivée !</h3><div class="content"><div id="header"> <img class="centered" width="80px" height="80px" src="https://jld-philatelie.fr/assets/img/logo.png" /></div><div style="border-top: 5px solid #236088;"><div><div class="mb"><p>Commande du ' + date + '</p><p><strong>Mail de contact:</strong> ' + data.email + '</p></div><h3>D&#233;tail de la commande</h3><div class="card"><div class="timbreList"> ' + timbreList + '</div></div><div><p><strong>Nombre de timbres:</strong> ' + timbreQuantity + '</p><p class="mb"><strong>Sous-total:</strong> ' + sousTotal.toFixed(2) + '€</p><p class="mb"><strong>Livraison choisie: </strong>' + data.envoi.label + '</p><p>Total commande: ' + totalPrice.toFixed(2) + '€</p>' + message + '</div></div></div></div></body></html>';
         var mailOptions = {
             from: CONFIG.mail_sender_address,
             to: CONFIG.mail_sender_destination,
-            subject: 'DEVIS #' + response.devisId + ': ' + data.email,
+            subject: 'COMMANDE #' + response.devisId + ': ' + data.email,
             html: mailContent
         };
         var transporter = nodemailer.createTransport({
@@ -102,13 +135,13 @@ module.exports.sendMailToSeller = async (data, timbreTable, timbreQuantity, sous
     }
 }
 
-module.exports.sendMailToCustomer = async (data, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response) => {
+module.exports.sendMailToCustomer = async (data, date, timbreTable, timbreQuantity, sousTotal, totalPrice, message, devisId) => {
     try {
-        mailContent = '<html><head> <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/> <style>table{border-collapse: collapse;}table, th, td{border: 1px solid black; text-align: center;}</style></head><body> <div> <div style="display: flex"> <img width="80px" height="80px" src="https://jld-philatelie.fr/assets/img/logo.png"/> <h3 style="margin:1em 0 0 0;color:transparent;">Votre devis a été envoyé</h3> </div><div style="border-top: 5px solid #236088;"> <div> <h5><strong>D&#233;tail du devis</strong></h5> <table> <thead class="thead-light"> <tr> <th>N&#176;</th> <th>Prix</th> <th>Qt&#233;</th> <th>Prix total</th> </tr></thead> <tbody>' + timbreTable + ' <tr> <td><strong>SS TOTAL</strong></td><td></td><td>' + timbreQuantity + '</td><td>' + sousTotal.toFixed(2) + '€</td></tr></tbody> </table> </div><div id="livraison">Livraison choisie: ' + data.envoi.denomination + '</div><div class="total"> <p>Total: ' + totalPrice + '</p></div></div></div>' + message + '</body></html>';
+        mailContent = '<html><head><meta http-equiv="Content-Type" content="text/html; charset=utf-8" /><style>body{font-family:Helvetica;font-size:1.1em;}.content{max-width:600px !important;display:flex;flex-direction:column;justify-content:center;margin:auto}#header{display:flex;padding:0.5em}.centered{display:block;margin-left:auto;margin-right:auto}.mb{margin-bottom:3em}.mt{margin-top:3em}.pt{padding-top:1em}.card{background-color:rgb(245, 245, 245);border:1px rgb(214, 214, 214) solid;padding:0.5em;border-radius:5px;margin-bottom:2em}.timbreList{display:flex;flex-wrap:wrap}.timbre{background-color:#4592af;color:white;border-radius:5px;margin:0.2em;padding:0.2em}table{border-collapse:collapse}table,th,td{border:1px solid black;text-align:center; padding: 0.4em;}</style></head><body><h3 style="margin:0;color:transparent;height:0;">Référence commande: #' + devisId + '</h3><div class="content"><div id="header"> <img class="centered" width="80px" height="80px" src="https://jld-philatelie.fr/assets/img/logo.png" /></div><div style="border-top: 5px solid #236088;"><div><div class="mb"><h3>Merci de votre commande</h3></div><p>Date de votre commande: ' + date + '</p><table><thead><tr class="pt"><th>N&#176;</th><th>Prix</th><th>Qt&#233;</th><th>Prix total</th></tr></thead><tbody>' + timbreTable + '<tr><td><strong>SS TOTAL</strong></td><td></td><td>' + timbreQuantity + '</td><td>' + sousTotal.toFixed(2) + '€</td></tr></tbody></table></div><p><strong>Livraison choisie: </strong>' + data.envoi.label + '</p><div class="total mb"><p style="font-size:1.2em;"><strong>Total:</strong> ' + totalPrice.toFixed(2) + '€</p> ' + message + '<div class="mt"><h4>Et maintenant ?</h4><p>Votre commande est passée. Dans les prochains jours, vous recevrez un email de ma part (via l\'adresse email <strong> jld_philatelie@laposte.net</strong>) qui confirmera votre commande avec les informations pour le paiement.</p><p>Une reçu, votre commande sera expédiée selon le mode d\'envoi choisi.</p><p>N\'hésitez pas à me contacter via l\'adresse email ci-dessus pour toute question.</p><p>Merci de votre confiance.</p><p style="margin-top: 2em;text-align:right">JLD-Philatelie.</p></div></div></div></div></body></html>';
         var mailOptions = {
             from: CONFIG.mail_sender_address,
             to: data.email,
-            subject: 'JLD-Philatelie - Devis #' + response.devisId,
+            subject: 'Votre commande chez JLD-Philatelie',
             html: mailContent
         };
         var transporter = nodemailer.createTransport({
