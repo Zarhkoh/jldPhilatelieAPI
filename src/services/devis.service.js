@@ -66,17 +66,14 @@ module.exports.sendDevis = (data) => {
             }
             timbreTable += '</td>' + '<td>' + timbre.prixTimbre + '€</td>' + '<td>' + timbre.quantite + '</td><td>' + Number(timbre.prixTimbre * timbre.quantite).toFixed(2) + '€</td></tr>'
         });
-        console.log('PRIX ENVOI:' + data.envoi.prix, "SOUS TOTAL:" + sousTotal, "LABEL ENVOI:", data.envoi.label);
         totalPrice = Number(data.envoi.prix) + Number(sousTotal);
         if (data.optionalMessage != '') {
             message = '<p>Message :</p><div style="background-color:#e2e2e2;border:1px solid #bababa;padding:1em;">' + data.optionalMessage + '</div>';
         }
         try {
             const response = await devisBuilder.addDevis(data);
-            console.log('REPONSE:-----------------', response.devisId, '-------------------FIN RESPONSE')
             await this.sendMailToSeller(data, date, timbreList, timbreQuantity, sousTotal, totalPrice, message, response);
             await this.sendMailToCustomer(data, date, timbreTable, timbreQuantity, sousTotal, totalPrice, message, response.devisId);
-            console.log('les mails devraient être envoyés');
         } catch (err) {
             reject({
                 status: 500,
