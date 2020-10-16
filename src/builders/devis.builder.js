@@ -7,7 +7,7 @@ module.exports.addDevis = (data) => {
     data.timbres.forEach(timbre => {
         valeur += Number(timbre.prixTimbre);
     });
-    valeur += data.envoi.prix;
+    valeur += Number(data.envoi.prix);
     devis = {
         "email": data.email,
         "date": new Date(),
