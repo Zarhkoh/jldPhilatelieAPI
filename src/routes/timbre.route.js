@@ -188,7 +188,7 @@ router.get('/deleteTimbreById', TimbreController.deleteTimbreById);
  *         description: Prix du timbre
  *         in: formData
  *         required: true
- *         type: intege
+ *         type: number
  *       - name: imageTimbreUrl
  *         description: Url de l'image du timbre
  *         in: formData
