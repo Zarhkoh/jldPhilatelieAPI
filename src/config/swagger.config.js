@@ -3,15 +3,15 @@ const swaggerUi = require('swagger-ui-express');
 const CONFIG = require('./config');
 
 
-module.exports = function (app) {
+module.exports = function(app) {
     // Extended: https://swagger.io/specification/#infoObject
     const swaggerOptions = {
         swaggerDefinition: {
             info: {
                 title: `API ${CONFIG.db_name}`,
-                description: 'API de fidélisation de client via un système de couponing.',
+                description: 'API Pour le site JLD-Philatelie ',
                 contact: {
-                    name: 'Sullivan Delaby, Justine Moreau, Jeremy Thery'
+                    name: 'Sullivan Delaby'
                 },
                 servers: [`http://${CONFIG.db_host}:${CONFIG.db_port}`]
             }
