@@ -21,7 +21,6 @@ exports.deleteLivraisonById = async(req, res) => {
 
 exports.addLivraison = async(req, res) => {
     try {
-        console.log("BODY: " + req.body.params, "QUERY: " + req.query.newLivraison);
         let data = await livraisonService.addLivraison(req.body.params.newLivraison);
         return res.status(200).json(data);
     } catch (err) {
