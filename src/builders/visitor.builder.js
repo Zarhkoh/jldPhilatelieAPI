@@ -9,7 +9,7 @@ module.exports.createNewVisitor = (data) => {
         "visitorBrowser": data.visitorBrowser,
         "visitCount": 1
     }
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Visitor.create(visitor);
             resolve(result);
@@ -21,7 +21,7 @@ module.exports.createNewVisitor = (data) => {
 }
 
 module.exports.addVisit = (data) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Visitor.findOne({
                 where: {
@@ -31,12 +31,12 @@ module.exports.addVisit = (data) => {
                 if (visitor == null) {
                     this.createNewVisitor(data);
                     this.updateTotalVisits();
-                }
-                else {
+                } else {
                     try {
+                        let updateCount = false;
                         const actualDate = moment().format('yyyy-MM-DD');
                         const lastVisiteDate = moment(visitor.visitorLastVisit).format('yyyy-MM-DD');
-                        if (lastVisiteDate !== actualDate) {
+                        if (lastVisiteDate !== actualDate || visitor.visitorIp == "0.0.0.0" && ((new Date().getTime() - new Date(visitor.visitorLastVisit).getTime()) / 60000) > 5) {
                             this.updateTotalVisits();
                             visitor.update({ visitorLastVisit: new Date() });
                             return visitor.increment('visitCount', { by: 1 });
@@ -55,7 +55,7 @@ module.exports.addVisit = (data) => {
 };
 
 module.exports.updateTotalVisits = () => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Visitor.findOne({
                 where: {
@@ -67,8 +67,7 @@ module.exports.updateTotalVisits = () => {
                         "visitorIp": 'total',
                     }
                     this.createNewVisitor(visitor);
-                }
-                else {
+                } else {
                     return option.increment('visitCount', { by: 1 });
                 }
             });
@@ -82,14 +81,15 @@ module.exports.updateTotalVisits = () => {
 
 
 module.exports.getTotalVisits = () => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Visitor.findOne({
                 where: {
                     visitorIp: 'total'
                 },
                 attributes: [
-                    'visitCount']
+                    'visitCount'
+                ]
             });
             resolve(result);
         } catch (err) {
