@@ -2,9 +2,9 @@ const visitorBuilder = require('../builders/visitor.builder');
 
 
 module.exports.addVisit = (data) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
-            const timbreList = await visitorBuilder.addVisit(data);
+            await visitorBuilder.addVisit(data);
         } catch (err) {
             console.log(err);
             reject({
@@ -16,7 +16,7 @@ module.exports.addVisit = (data) => {
 };
 
 module.exports.getTotalVisits = () => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const total = await visitorBuilder.getTotalVisits();
             resolve(total);
