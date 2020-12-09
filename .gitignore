@@ -110,3 +110,4 @@ dist
 # custom files
 .env.prod
 jldPhilatelieApi.json
+frontLogs.txt
