@@ -4,6 +4,7 @@ const auth = require('../routes/auth.route');
 const devis = require('../routes/devis.route');
 const news = require('../routes/news.route');
 const livraison = require('../routes/livraison.route');
+const log = require('../routes/log.route');
 const CONFIG = require('../config/config');
 
 // GESTION DES ROUTES PRINCIPALES
@@ -27,4 +28,6 @@ module.exports = app => {
     //LIVRAISON
     app.use(CONFIG.uri_prefix_main, livraison);
 
+    //LOGS
+    app.use(CONFIG.uri_prefix_main, log);
 };
