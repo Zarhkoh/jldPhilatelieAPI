@@ -31,7 +31,6 @@ module.exports.addLivraison = (livraison) => {
 module.exports.updateLivraison = (livraison) => {
     return new Promise(async(resolve, reject) => {
         try {
-            livraison.dateEditionLivraison = new Date();
             const res = await livraisonBuilder.updateLivraison(livraison);
             resolve(res);
         } catch (err) {
