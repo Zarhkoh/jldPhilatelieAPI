@@ -18,6 +18,18 @@ const TimbreController = require('../controllers/timbre.controller.js');
  */
 router.get('/timbres', TimbreController.getTimbres);
 
+/**
+ * @swagger
+ * /timbresQty:
+ *   get:
+ *     description: Récupère la quantité de timbres dans la bdd
+ *     produces:
+ *      - application/json
+ *     responses:
+ *       200:
+ *         description: timbres
+ */
+router.get('/timbresQty', TimbreController.getTimbresQty);
 
 
 /**
@@ -57,6 +69,11 @@ router.get('/timbresByCat', TimbreController.getTimbresListByCat);
  *         description: Numéro de fin de séquence
  *         required: true
  *         type: integer
+ *       - in: query
+ *         name : condition
+ *         description: Neuf/Oblitéré?
+ *         required: true
+ *         type: string
  *     responses:
  *       200:
  *         description: timbre

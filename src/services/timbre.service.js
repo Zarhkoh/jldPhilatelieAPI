@@ -1,7 +1,7 @@
 const timbreBuilder = require('../builders/timbre.builder');
 
 module.exports.getTimbres = () => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const timbres = await timbreBuilder.findTimbre();
             resolve(timbres);
@@ -14,8 +14,22 @@ module.exports.getTimbres = () => {
     });
 };
 
+module.exports.getTimbresQty = () => {
+    return new Promise(async(resolve, reject) => {
+        try {
+            const res = await timbreBuilder.findTimbreQty();
+            resolve(res);
+        } catch (err) {
+            reject({
+                status: 500,
+                message: err
+            });
+        }
+    });
+};
+
 module.exports.addTimbre = (timbre) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const res = await timbreBuilder.addTimbre(timbre);
             resolve(res);
@@ -29,7 +43,7 @@ module.exports.addTimbre = (timbre) => {
 };
 
 module.exports.updateTimbre = (timbre) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const res = await timbreBuilder.updateTimbre(timbre);
             resolve(res);
@@ -43,7 +57,7 @@ module.exports.updateTimbre = (timbre) => {
 };
 
 module.exports.deleteTimbreById = (timbreId) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const timbre = await timbreBuilder.deleteTimbreById(timbreId);
             resolve(timbre);
@@ -57,7 +71,7 @@ module.exports.deleteTimbreById = (timbreId) => {
 };
 
 module.exports.getTimbreByNumeroTimbre = (numero_timbre) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const timbre = await timbreBuilder.findTimbreByNumeroTimbre(numero_timbre);
             resolve(timbre);
@@ -71,7 +85,7 @@ module.exports.getTimbreByNumeroTimbre = (numero_timbre) => {
 };
 
 module.exports.getTimbreByIdTimbre = (id_timbre) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const timbre = await timbreBuilder.findTimbreByIdTimbre(id_timbre);
             resolve(timbre);
@@ -85,7 +99,7 @@ module.exports.getTimbreByIdTimbre = (id_timbre) => {
 };
 
 module.exports.incrementTimbreQuantity = (id_timbre, qty) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const timbre = await timbreBuilder.incrementTimbreQuantity(id_timbre, qty);
             resolve(timbre);
@@ -99,7 +113,7 @@ module.exports.incrementTimbreQuantity = (id_timbre, qty) => {
 };
 
 module.exports.decrementTimbreQuantity = (id_timbre, qty) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const timbre = await timbreBuilder.decrementTimbreQuantity(id_timbre, qty);
             resolve(timbre);
@@ -112,10 +126,10 @@ module.exports.decrementTimbreQuantity = (id_timbre, qty) => {
     });
 };
 
-module.exports.getTimbresListByNumberRange = (start, end) => {
-    return new Promise(async (resolve, reject) => {
+module.exports.getTimbresListByNumberRange = (start, end, condition) => {
+    return new Promise(async(resolve, reject) => {
         try {
-            const timbreList = await timbreBuilder.getTimbresListByNumberRange(start, end);
+            const timbreList = await timbreBuilder.getTimbresListByNumberRange(start, end, condition);
             resolve(timbreList);
         } catch (err) {
             reject({
@@ -127,7 +141,7 @@ module.exports.getTimbresListByNumberRange = (start, end) => {
 };
 
 module.exports.getTimbresListByCat = (categorie) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const timbreList = await timbreBuilder.getTimbresListByCat(categorie);
             resolve(timbreList);

@@ -3,7 +3,7 @@ const { Op } = require("sequelize");
 
 //Find all timbres
 module.exports.findTimbre = () => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Timbre.findAll();
             resolve(result);
@@ -12,6 +12,19 @@ module.exports.findTimbre = () => {
         }
     });
 };
+
+//Find how much stamps we have in bdd
+module.exports.findTimbreQty = () => {
+    return new Promise(async(resolve, reject) => {
+        try {
+            const result = await db.models.Timbre.count();
+            resolve(result);
+        } catch (err) {
+            reject(err);
+        }
+    });
+};
+
 module.exports.addTimbre = (data) => {
     timbre = {
         "numeroTimbre": data.numero,
@@ -24,7 +37,7 @@ module.exports.addTimbre = (data) => {
         "optionalInfos": data.optionalInfos,
         "tasType": data.tasType
     }
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Timbre.create(timbre);
             resolve(result);
@@ -36,14 +49,13 @@ module.exports.addTimbre = (data) => {
 }
 
 module.exports.updateTimbre = (data) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
-            const result = await db.models.Timbre.update(data,
-                {
-                    where: {
-                        timbreId: data.timbreId
-                    }
-                });
+            const result = await db.models.Timbre.update(data, {
+                where: {
+                    timbreId: data.timbreId
+                }
+            });
             resolve(result);
         } catch (err) {
             reject(err);
@@ -53,7 +65,7 @@ module.exports.updateTimbre = (data) => {
 
 
 module.exports.deleteTimbreById = (id) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Timbre.destroy({
                 where: {
@@ -67,23 +79,39 @@ module.exports.deleteTimbreById = (id) => {
     });
 };
 
-module.exports.getTimbresListByNumberRange = (start, end) => {
-    return new Promise(async (resolve, reject) => {
+module.exports.getTimbresListByNumberRange = (start, end, condition) => {
+    return new Promise(async(resolve, reject) => {
         try {
-            const result = await db.models.Timbre.findAll({
-                where: {
-                    numeroTimbre: { [Op.between]: [start, end] },
-                    catTimbre: ['classic']
-                }
-            });
-            resolve(result);
+            if (condition == "neuf") {
+                const result = await db.models.Timbre.findAll({
+                    where: {
+                        numeroTimbre: {
+                            [Op.between]: [start, end]
+                        },
+                        catTimbre: ['classic'],
+                        etatTimbre: ['neuf', 'occas', 'sg']
+                    }
+                });
+                resolve(result);
+            } else if (condition == "obl") {
+                const result = await db.models.Timbre.findAll({
+                    where: {
+                        numeroTimbre: {
+                            [Op.between]: [start, end]
+                        },
+                        catTimbre: ['classic'],
+                        etatTimbre: ['obl']
+                    }
+                });
+                resolve(result);
+            }
         } catch (err) {
             reject(err);
         }
     });
 };
 module.exports.findTimbreByNumeroTimbre = (numero) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Timbre.findAll({
                 where: {
@@ -98,7 +126,7 @@ module.exports.findTimbreByNumeroTimbre = (numero) => {
 };
 
 module.exports.findTimbreByIdTimbre = (id) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Timbre.findOne({
                 where: {
@@ -113,7 +141,7 @@ module.exports.findTimbreByIdTimbre = (id) => {
 };
 
 module.exports.incrementTimbreQuantity = (id, qte) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Timbre.findOne({
                 where: {
@@ -130,7 +158,7 @@ module.exports.incrementTimbreQuantity = (id, qte) => {
 };
 
 module.exports.decrementTimbreQuantity = (id, qte) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Timbre.findOne({
                 where: {
@@ -147,7 +175,7 @@ module.exports.decrementTimbreQuantity = (id, qte) => {
 };
 
 module.exports.getTimbresListByCat = (categorie) => {
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Timbre.findAll({
                 where: {
