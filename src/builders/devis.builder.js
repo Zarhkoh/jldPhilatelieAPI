@@ -12,12 +12,12 @@ module.exports.addDevis = (data) => {
         "email": data.email,
         "date": new Date(),
         "timbres": data.timbres,
-        "envoi": data.envoi.type,
+        "envoi": data.envoi.nomLivraison,
         "quantiteTimbres": data.timbres.length,
         "valeur": valeur,
         "optionalMessage": data.optionalMessage
     }
-    return new Promise(async (resolve, reject) => {
+    return new Promise(async(resolve, reject) => {
         try {
             const result = await db.models.Devis.create(devis);
             resolve(result);
