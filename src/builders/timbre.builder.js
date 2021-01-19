@@ -174,15 +174,27 @@ module.exports.decrementTimbreQuantity = (id, qte) => {
     });
 };
 
-module.exports.getTimbresListByCat = (categorie) => {
+module.exports.getTimbresListByCat = (categorie, condition) => {
     return new Promise(async(resolve, reject) => {
         try {
-            const result = await db.models.Timbre.findAll({
-                where: {
-                    catTimbre: categorie
-                }
-            });
-            resolve(result);
+            if (condition == 'neuf') {
+                const result = await db.models.Timbre.findAll({
+                    where: {
+                        catTimbre: categorie,
+                        etatTimbre: ['neuf', 'occas', 'sg']
+                    }
+                });
+                resolve(result);
+            } else if (condition == 'obl') {
+                const result = await db.models.Timbre.findAll({
+                    where: {
+                        catTimbre: categorie,
+                        etatTimbre: ['obl']
+                    }
+                });
+                resolve(result);
+            }
+
         } catch (err) {
             reject(err);
         }

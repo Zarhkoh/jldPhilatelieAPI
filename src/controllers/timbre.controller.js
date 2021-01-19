@@ -97,7 +97,8 @@ exports.getTimbresListByNumberRange = async(req, res) => {
 
 exports.getTimbresListByCat = async(req, res) => {
     try {
-        let data = await timbreService.getTimbresListByCat(req.query.categorie);
+        console.log(req.query.categorie, req.query.condition);
+        let data = await timbreService.getTimbresListByCat(req.query.categorie, req.query.condition);
         return res.status(200).json(data);
     } catch (err) {
         return res.status(err.status).send(err);
